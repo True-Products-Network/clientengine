@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking Setup — ClientEngine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 900;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-top {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #f8fafc;
+            letter-spacing: 0.02em;
+        }
+        .logo-bottom {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .guide-header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .guide-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .guide-header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .guide-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .guide-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: #f8fafc;
+        }
+        .guide-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 0.75rem;
+            color: #3b82f6;
+        }
+        .guide-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+            color: #cbd5e1;
+        }
+        .guide-content p {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+        .guide-content ul, .guide-content ol {
+            color: #94a3b8;
+            margin: 1rem 0 1rem 1.5rem;
+        }
+        .guide-content li {
+            margin-bottom: 0.5rem;
+        }
+        .guide-content strong {
+            color: #f8fafc;
+        }
+        .guide-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #cbd5e1;
+            font-style: italic;
+        }
+        .guide-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .guide-content th, .guide-content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .guide-content th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #f8fafc;
+            font-weight: 600;
+        }
+        .guide-content tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .checklist {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .checklist h4 {
+            margin-top: 0;
+            color: #3b82f6;
+        }
+        .checklist ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checklist li::before {
+            content: "☐";
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        .cta-section {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 16px;
+            margin: 3rem 0;
+        }
+        .cta-section h2 {
+            margin-top: 0;
+        }
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            text-align: center;
+            color: #64748b;
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .guide-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">CE</div>
+                <div class="logo-text">
+                    <span class="logo-top">ClientEngine</span>
+                    <span class="logo-bottom">Appointment Booking Guide</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="/members.html">Members</a>
+                <a href="/deliverables.html">Deliverables</a>
+                <a href="/members.html" class="btn-primary">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-header">
+        <h1>Appointment Booking Setup</h1>
+        <p>Never Lose Another Lead to "I'll Call You Back"</p>
+    </header>
+
+    <main class="guide-content">
+        <h2>What This Guide Covers</h2>
+        <p>This guide shows you how to set up an appointment booking system that lets prospects schedule time with you directly — no phone tag, no back-and-forth emails, no lost leads. By the end, you'll have a booking system that works 24/7 and integrates seamlessly with your calendar.</p>
+
+        <h2>Part 1: Why Appointment Booking Matters</h2>
+
+        <h3>The Problem with Manual Scheduling</h3>
+        <p><strong>Before:</strong></p>
+        <ul>
+            <li>Prospect fills out form</li>
+            <li>You email them 3 options</li>
+            <li>They reply with different times</li>
+            <li>You check your calendar</li>
+            <li>They don't respond</li>
+            <li>Lead goes cold</li>
+        </ul>
+
+        <p><strong>After:</strong></p>
+        <ul>
+            <li>Prospect visits your booking page</li>
+            <li>They see your real availability</li>
+            <li>They pick a time that works</li>
+            <li>Meeting appears on both calendars</li>
+            <li>Confirmation email sent automatically</li>
+            <li>Reminder sent before the call</li>
+        </ul>
+
+        <blockquote>Result: More booked calls, less admin work, happier prospects.</blockquote>
+
+        <h2>Part 2: Setting Up Your Booking Calendar</h2>
+
+        <h3>Step 1: Connect Your Calendar</h3>
+        <p><strong>What you need:</strong></p>
+        <ul>
+            <li>Google Calendar, Outlook, or iCloud calendar</li>
+            <li>10 minutes to set up the connection</li>
+        </ul>
+
+        <p><strong>How to connect:</strong></p>
+        <ol>
+            <li>Go to Settings → Calendar Integration</li>
+            <li>Click "Connect Calendar"</li>
+            <li>Sign in to your calendar provider</li>
+            <li>Grant permission to read/write events</li>
+            <li>Select which calendar to use for bookings</li>
+        </ol>
+
+        <h3>Step 2: Set Your Availability</h3>
+        <p><strong>Availability settings:</strong></p>
+        <ul>
+            <li><strong>Working hours:</strong> When are you actually available? (e.g., 9 AM - 5 PM)</li>
+            <li><strong>Working days:</strong> Which days? (Monday-Friday? Include Saturday?)</li>
+            <li><strong>Time zone:</strong> Set to YOUR time zone, system handles conversion</li>
+            <li><strong>Buffer time:</strong> Add 15 minutes between calls</li>
+        </ul>
+
+        <h3>Step 3: Create Appointment Types</h3>
+        <p><strong>Different meetings need different setups:</strong></p>
+
+        <h4>Type 1: Discovery Call (15 minutes)</h4>
+        <ul>
+            <li>Purpose: Quick qualification</li>
+            <li>When to use: First contact, cold leads</li>
+            <li>Buffer: 15 minutes after</li>
+        </ul>
+
+        <h4>Type 2: Strategy Session (30 minutes)</h4>
+        <ul>
+            <li>Purpose: Deep dive, proposal discussion</li>
+            <li>When to use: Qualified leads, existing clients</li>
+            <li>Buffer: 15 minutes after</li>
+        </ul>
+
+        <h4>Type 3: Onboarding Call (45 minutes)</h4>
+        <ul>
+            <li>Purpose: New client kickoff</li>
+            <li>When to use: After sale is made</li>
+            <li>Buffer: 30 minutes after</li>
+        </ul>
+
+        <h2>Part 3: Customizing Your Booking Page</h2>
+
+        <h3>Step 4: Design Your Booking Page</h3>
+        <p><strong>Required elements:</strong></p>
+
+        <h4>1. Headline: Clear promise</h4>
+        <ul>
+            <li>Good: "Book Your Free Strategy Session"</li>
+            <li>Bad: "Schedule a Meeting"</li>
+        </ul>
+
+        <h4>2. Subheadline: What happens next</h4>
+        <ul>
+            <li>Good: "In 30 minutes, we'll map out a plan to [solve their problem]"</li>
+            <li>Bad: "Pick a time below"</li>
+        </ul>
+
+        <h4>3. Your photo: Build trust</h4>
+        <ul>
+            <li>Professional headshot</li>
+            <li>Friendly expression</li>
+            <li>Consistent with your brand</li>
+        </ul>
+
+        <h3>Step 5: Add Qualifying Questions</h3>
+        <p><strong>Filter out time-wasters before they book:</strong></p>
+
+        <h4>Essential questions to ask:</h4>
+        <ol>
+            <li><strong>"What's your biggest challenge with [topic] right now?"</strong>
+                <ul>
+                    <li>Purpose: Understand their pain</li>
+                    <li>Required: Yes</li>
+                </ul>
+            </li>
+            <li><strong>"What made you decide to book this call now?"</strong>
+                <ul>
+                    <li>Purpose: Gauge urgency</li>
+                    <li>Required: Yes</li>
+                </ul>
+            </li>
+            <li><strong>"Have you worked with a [your service type] before?"</strong>
+                <ul>
+                    <li>Purpose: Set expectations</li>
+                    <li>Required: No</li>
+                </ul>
+            </li>
+        </ol>
+
+        <blockquote>Pro tip: Don't ask too many questions. 3-4 max or you'll lose bookings.</blockquote>
+
+        <h3>Step 6: Confirmation and Reminder Settings</h3>
+        <p><strong>Reduce no-shows with automatic follow-up:</strong></p>
+
+        <h4>Confirmation email (immediate):</h4>
+        <ul>
+            <li>Subject: "You're booked! [Date] at [Time]"</li>
+            <li>Include: Date, time, your photo, what to prepare</li>
+            <li>Add to calendar button (Google, Outlook, Apple)</li>
+            <li>Reschedule link</li>
+        </ul>
+
+        <h4>Reminder email (24 hours before):</h4>
+        <ul>
+            <li>Subject: "Tomorrow: Your strategy session"</li>
+            <li>Include: Quick agenda reminder</li>
+            <li>Join link (if video call)</li>
+        </ul>
+
+        <h4>Reminder SMS (2 hours before):</h4>
+        <ul>
+            <li>"Hi [Name], reminder: our call is at [Time]. Here's the link: [URL]"</li>
+            <li>Only if they provided phone number</li>
+        </ul>
+
+        <h2>Part 4: Integration and Automation</h2>
+
+        <h3>Step 7: Connect to Your CRM</h3>
+        <p><strong>Every booking should trigger your follow-up system:</strong></p>
+
+        <p><strong>Automatic actions on new booking:</strong></p>
+        <ol>
+            <li>Create/update contact in CRM</li>
+            <li>Tag as "Call Booked"</li>
+            <li>Move to "Scheduled Call" pipeline stage</li>
+            <li>Add to "Upcoming Calls" smart list</li>
+            <li>Send notification to you (email/SMS)</li>
+        </ol>
+
+        <h3>Step 8: Set Up Video Calls</h3>
+        <p><strong>Option 1: Built-in video</strong></p>
+        <ul>
+            <li>Pros: Simple, no extra accounts</li>
+            <li>Cons: Less familiar to prospects</li>
+        </ul>
+
+        <p><strong>Option 2: Zoom integration</strong></p>
+        <ul>
+            <li>Pros: Everyone knows Zoom</li>
+            <li>Cons: Requires Zoom account</li>
+        </ul>
+
+        <p><strong>Option 3: Google Meet</strong></p>
+        <ul>
+            <li>Pros: No software download needed</li>
+            <li>Cons: 60-minute limit on free tier</li>
+        </ul>
+
+        <h2>Part 5: Advanced Booking Strategies</h2>
+
+        <h3>Step 9: Create Urgency with Limited Slots</h3>
+        <p><strong>Tactics that work:</strong></p>
+        <ol>
+            <li><strong>Show limited availability</strong> — "Only 3 spots left this week"</li>
+            <li><strong>Offer specific time windows</strong> — "I take calls Tuesday and Thursday mornings"</li>
+            <li><strong>Seasonal availability</strong> — "Booking 2 weeks out due to demand"</li>
+        </ol>
+
+        <h3>Step 10: Reduce No-Shows</h3>
+        <p><strong>Pre-call engagement:</strong></p>
+        <ol>
+            <li><strong>Immediate value:</strong> Send a quick video after booking</li>
+            <li><strong>Preparation email:</strong> 48 hours before, send "To get the most from our call, please think about..."</li>
+            <li><strong>Confirmation required:</strong> Ask them to reply "CONFIRM" to the reminder</li>
+        </ol>
+
+        <h2>Part 6: Tracking and Optimization</h2>
+
+        <h3>Step 11: Monitor Your Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>What It Tells You</th>
+            </tr>
+            <tr>
+                <td>Booking rate</td>
+                <td>>20%</td>
+                <td>How compelling your offer is</td>
+            </tr>
+            <tr>
+                <td>Show-up rate</td>
+                <td>>70%</td>
+                <td>Quality of your reminders</td>
+            </tr>
+            <tr>
+                <td>Conversion rate</td>
+                <td>>30%</td>
+                <td>How well you sell on the call</td>
+            </tr>
+            <tr>
+                <td>Time to book</td>
+                <td><7 days</td>
+                <td>Urgency of your prospects</td>
+            </tr>
+        </table>
+
+        <h3>Step 12: A/B Test Your Booking Page</h3>
+        <p><strong>Elements to test:</strong></p>
+        <ul>
+            <li><strong>Headline:</strong> Problem-focused vs. outcome-focused</li>
+            <li><strong>Photo:</strong> Professional vs. casual</li>
+            <li><strong>Length:</strong> Short form vs. detailed form</li>
+            <li><strong>CTA button:</strong> "Book Now" vs. "Schedule My Call"</li>
+            <li><strong>Social proof:</strong> Testimonial vs. stats</li>
+        </ul>
+
+        <div class="checklist">
+            <h4>Quick Reference: Booking Setup Checklist</h4>
+            <p><strong>Initial Setup</strong></p>
+            <ul>
+                <li>Calendar connected</li>
+                <li>Working hours set</li>
+                <li>Buffer time configured</li>
+                <li>Appointment types created</li>
+                <li>Booking page customized</li>
+                <li>Qualifying questions added</li>
+                <li>Confirmation email written</li>
+                <li>Reminder emails scheduled</li>
+                <li>CRM integration active</li>
+                <li>Video call connected (if needed)</li>
+            </ul>
+            <p><strong>Optimization</strong></p>
+            <ul>
+                <li>Test booking flow yourself</li>
+                <li>Review metrics weekly</li>
+                <li>A/B test one element monthly</li>
+                <li>Update availability seasonally</li>
+                <li>Refresh testimonials quarterly</li>
+            </ul>
+        </div>
+
+        <h2>Common Mistakes to Avoid</h2>
+        <ol>
+            <li><strong>Too many appointment types</strong> — Confuses prospects, keep it to 3-4</li>
+            <li><strong>No buffer time</strong> — You'll burn out or run late</li>
+            <li><strong>Weak confirmation emails</strong> — Missed opportunity to set expectations</li>
+            <li><strong>Ignoring no-shows</strong> — Track and optimize this metric</li>
+            <li><strong>Set and forget</strong> — Review and update quarterly</li>
+        </ol>
+
+        <div class="cta-section">
+            <h2>Ready to Never Lose a Lead to Scheduling Again?</h2>
+            <p>Set up your booking system today and wake up to a calendar full of qualified prospects.</p>
+            <a href="/deliverables.html" class="btn-primary">View All Deliverables</a>
+        </div>
+
+        <blockquote>Your booking system works while you sleep. Set it up right, and you'll wake up to a calendar full of qualified prospects ready to talk.</blockquote>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ClientEngine. All rights reserved.</p>
+    </footer>
+</body>
+</html>

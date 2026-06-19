@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Implementation Guide — ClientEngine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent-blue: #0066FF;
+            --accent-cyan: #00CCFF;
+            --text-white: #ffffff;
+            --text-gray: #888888;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 900;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-top {
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        
+        .logo-bottom {
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+        
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-left: 30px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-white);
+        }
+        
+        .guide-header {
+            padding: 60px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 204, 255, 0.1));
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .guide-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        
+        .guide-header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .guide-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        .guide-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 40px 0 16px;
+            color: var(--accent-cyan);
+        }
+        
+        .guide-content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--text-white);
+        }
+        
+        .guide-content p {
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+        
+        .guide-content ul, .guide-content ol {
+            color: var(--text-gray);
+            margin: 16px 0 16px 24px;
+        }
+        
+        .guide-content li {
+            margin-bottom: 8px;
+        }
+        
+        .day-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        
+        .day-card h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .week-header {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 204, 255, 0.2));
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 32px 0 20px;
+        }
+        
+        .week-header h3 {
+            margin: 0;
+            color: var(--text-white);
+            font-size: 1.3rem;
+        }
+        
+        .week-header p {
+            margin: 8px 0 0;
+            color: var(--text-gray);
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+        
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 24px;
+            text-align: center;
+            color: var(--text-gray);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo-mark">
+                <div class="logo-icon">CE</div>
+                <div class="logo-text">
+                    <span class="logo-top">CLIENTENGINE</span>
+                    <span class="logo-bottom">30-Day Guide</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="/members.html">← Back to Member Area</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-header">
+        <h1>30-Day Implementation Guide</h1>
+        <p>From Zero to Fully-Systemized in 30 Days</p>
+    </header>
+
+    <main class="guide-content">
+        <h2>What This Guide Covers</h2>
+        <p>This is your day-by-day roadmap to implementing ClientEngine and transforming your follow-up system. No overwhelm, no confusion — just clear daily actions that build on each other. By Day 30, you'll have a working system that captures leads, books appointments, and moves prospects toward a sale automatically.</p>
+
+        <h2>Before You Start</h2>
+        <h3>What You Need</h3>
+        <ul>
+            <li>Access to your CRM (GoHighLevel/LeadProspector)</li>
+            <li>30-60 minutes per day for implementation</li>
+            <li>Your current lead sources identified</li>
+            <li>A clear offer (what you sell and for how much)</li>
+        </ul>
+
+        <h3>What You'll Have by Day 30</h3>
+        <ul>
+            <li>Clean, organized CRM</li>
+            <li>Lead capture forms on your website</li>
+            <li>Automated follow-up sequences</li>
+            <li>Working appointment booking system</li>
+            <li>Performance dashboard</li>
+            <li>30 days of content/emails written</li>
+            <li>Trained habits for daily CRM use</li>
+        </ul>
+
+        <div class="week-header">
+            <h3>WEEK 1: Foundation (Days 1-7)</h3>
+            <p>Theme: Get your house in order. Clean data, clear structure.</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 1: Audit Your Current State (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Export all contacts from your current system</li>
+                <li>Count how many leads you have</li>
+                <li>Identify where leads currently come from</li>
+                <li>List the tools you're using (spreadsheets, email, etc.)</li>
+                <li>Document your current follow-up process (or lack thereof)</li>
+            </ol>
+            <p><strong>Deliverable:</strong> One-page audit document</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 2: Set Up Your CRM Structure (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Log into your CRM</li>
+                <li>Review and customize contact fields</li>
+                <li>Create custom fields for your business: Lead Source, Lead Temperature, Next Action Date, Notes</li>
+                <li>Set up your lead source dropdown</li>
+            </ol>
+            <p><strong>Deliverable:</strong> CRM structure ready for data</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 3: Import and Clean Your Contacts (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Import your contact list</li>
+                <li>Merge duplicates</li>
+                <li>Fill in missing lead sources (best guess is fine)</li>
+                <li>Tag existing customers</li>
+                <li>Tag hot prospects</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Clean contact database</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 4: Map Your Sales Process (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Write down each step a lead takes from first contact to sale</li>
+                <li>Identify decision points where leads move forward or drop out</li>
+                <li>Name each stage clearly</li>
+                <li>Estimate probability of closing at each stage</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Sales process map with 5-7 stages</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 5: Build Your Pipeline (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Create your pipeline in the CRM</li>
+                <li>Add each stage from your process map</li>
+                <li>Set probability percentages</li>
+                <li>Customize stage names if needed</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Working pipeline with stages</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 6: Create Your Tag System (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Create status tags (Customer, Prospect, Partner)</li>
+                <li>Create interest tags (what they want)</li>
+                <li>Create action tags (Follow Up, Hot Lead, etc.)</li>
+                <li>Apply tags to existing contacts</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Tag system with 10-15 core tags</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 7: Build Smart Lists (30 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Create "Hot Leads" smart list</li>
+                <li>Create "Follow Up Needed" smart list</li>
+                <li>Create "New This Week" smart list</li>
+                <li>Create "Customers" smart list</li>
+                <li>Test each list to make sure it works</li>
+            </ol>
+            <p><strong>Deliverable:</strong> 4-5 smart lists that update automatically</p>
+        </div>
+
+        <div class="week-header">
+            <h3>WEEK 2: Capture (Days 8-14)</h3>
+            <p>Theme: Build your lead capture system. Get leads into your CRM automatically.</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 8: Design Your Lead Capture Form (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Choose your form tool (native CRM, Typeform, etc.)</li>
+                <li>Design the form layout</li>
+                <li>Add essential fields: Name, Email, Phone</li>
+                <li>Add one qualifying question</li>
+                <li>Write form copy (headline, button text)</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Form design document</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 9: Build Your First Form (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Create the form in your tool</li>
+                <li>Connect it to your CRM</li>
+                <li>Set lead source automatically</li>
+                <li>Test the form yourself</li>
+                <li>Get a friend to test it</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Working form that creates CRM contacts</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 10: Create Multiple Capture Points (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Build "Contact Us" form</li>
+                <li>Build "Free Consultation" form</li>
+                <li>Build lead magnet download form</li>
+                <li>Set different tags for each form</li>
+            </ol>
+            <p><strong>Deliverable:</strong> 3 forms for different situations</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 11: Set Up Appointment Booking (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Connect your calendar</li>
+                <li>Set your availability</li>
+                <li>Create appointment types</li>
+                <li>Add qualifying questions</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Working booking page</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 12: Configure Confirmation & Reminders (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Write confirmation email</li>
+                <li>Set up 24-hour reminder</li>
+                <li>Set up 2-hour reminder (SMS if possible)</li>
+                <li>Add no-show follow-up email</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Automated reminder sequence</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 13: Connect Booking to CRM (45 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Set automation: New booking = tag "Call Booked"</li>
+                <li>Move to "Scheduled Call" pipeline stage</li>
+                <li>Add to "Upcoming Calls" smart list</li>
+                <li>Send notification to you</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Integrated booking system</p>
+        </div>
+
+        <div class="day-card">
+            <h4>Day 14: Test Everything (60 minutes)</h4>
+            <p><strong>Actions:</strong></p>
+            <ol>
+                <li>Fill out each form as a test lead</li>
+                <li>Book a test appointment</li>
+                <li>Check that tags apply correctly</li>
+                <li>Verify pipeline stage changes</li>
+                <li>Fix any issues found</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Fully tested capture system</p>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px;"><a href="/members.html" class="btn-primary">← Back to Member Area</a></p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ClientEngine. All rights reserved.</p>
+    </footer>
+</body>
+</html>

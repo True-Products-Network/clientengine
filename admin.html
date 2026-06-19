@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — ClientEngine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent-blue: #0066FF;
+            --accent-cyan: #00CCFF;
+            --text-white: #ffffff;
+            --text-gray: #888888;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 900;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-top {
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        
+        .logo-bottom {
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            margin: 30px 0 16px;
+            color: var(--accent-cyan);
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .admin-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+        
+        .admin-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+        
+        .admin-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-card p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-white);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        
+        .guides-list {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .guide-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .guide-item:last-child {
+            border-bottom: none;
+        }
+        
+        .guide-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        .guide-info p {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 200, 83, 0.2);
+            color: #00C853;
+        }
+        
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 24px;
+            text-align: center;
+            color: var(--text-gray);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo-mark">
+                <div class="logo-icon">CE</div>
+                <div class="logo-text">
+                    <span class="logo-top">CLIENTENGINE</span>
+                    <span class="logo-bottom">Admin Dashboard</span>
+                </div>
+            </a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <p class="subtitle">Manage all ClientEngine content and resources</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Core Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">HTML Guides</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Deliverables</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">30-Day Guide</div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Quick Access</h2>
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3>📄 Pages</h3>
+                <p>Main website pages and member areas</p>
+                <a href="/index.html" class="btn-primary" target="_blank">Landing Page</a>
+                <a href="/members.html" class="btn-secondary" target="_blank">Member Area</a>
+            </div>
+            
+            <div class="admin-card">
+                <h3>📦 Deliverables</h3>
+                <p>Core deliverables and resources</p>
+                <a href="/deliverables.html" class="btn-primary" target="_blank">View All</a>
+                <a href="/deliverables" class="btn-secondary" target="_blank">Browse Files</a>
+            </div>
+            
+            <div class="admin-card">
+                <h3>📚 Guides</h3>
+                <p>Implementation guides and tutorials</p>
+                <a href="/guides" class="btn-primary" target="_blank">All Guides</a>
+            </div>
+        </div>
+        
+        <h2 class="section-title">All Guides & Resources</h2>
+        <div class="guides-list">
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>CRM Setup Guide</h4>
+                    <p>Organize contacts, build pipelines, create tags</p>
+                </div>
+                <div>
+                    <a href="/guides/crm-setup-guide.html" class="btn-primary" target="_blank">View</a>
+                    <span class="status-badge">Active</span>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Appointment Booking Setup</h4>
+                    <p>Calendar integration, reminders, no-show reduction</p>
+                </div>
+                <div>
+                    <a href="/guides/appointment-booking-setup.html" class="btn-primary" target="_blank">View</a>
+                    <span class="status-badge">Active</span>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Performance Dashboard Guide</h4>
+                    <p>Track 5 core metrics, make data-driven decisions</p>
+                </div>
+                <div>
+                    <a href="/guides/performance-dashboard-guide.html" class="btn-primary" target="_blank">View</a>
+                    <span class="status-badge">Active</span>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>30-Day Implementation Guide</h4>
+                    <p>Day-by-day roadmap from zero to fully systemized</p>
+                </div>
+                <div>
+                    <a href="/guides/30-day-implementation-guide.html" class="btn-primary" target="_blank">View</a>
+                    <span class="status-badge">Active</span>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Deliverables (Markdown)</h2>
+        <div class="guides-list">
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Ideal Client Blueprint</h4>
+                    <p>Define your perfect client profile</p>
+                </div>
+                <div>
+                    <a href="/deliverables/01-ideal-client-blueprint.md" class="btn-secondary" target="_blank">Download</a>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Outreach Templates</h4>
+                    <p>Ready-to-use outreach message templates</p>
+                </div>
+                <div>
+                    <a href="/deliverables/02-outreach-templates.md" class="btn-secondary" target="_blank">Download</a>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Follow-Up System</h4>
+                    <p>Automated follow-up sequences</p>
+                </div>
+                <div>
+                    <a href="/deliverables/03-follow-up-system.md" class="btn-secondary" target="_blank">Download</a>
+                </div>
+            </div>
+            
+            <div class="guide-item">
+                <div class="guide-info">
+                    <h4>Sales Call Scripts</h4>
+                    <p>Scripts for discovery and closing calls</p>
+                </div>
+                <div>
+                    <a href="/deliverables/04-sales-call-scripts.md" class="btn-secondary" target="_blank">Download</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2026 ClientEngine. All rights reserved.</p>
+    </footer>
+</body>
+</html>
